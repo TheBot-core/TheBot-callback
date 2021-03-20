@@ -1,14 +1,15 @@
 {
 	"owner": {
-		"spam": true,
-		"perm": true,
-		"blacklist": true,
 		"join": true,
 		"crash": true,
-		"role": true
+		"role": true,
+		"plugin": true
 	},
 	"mod": {
-		"blacklist": true,
-		"join": true
+		"join": true,
+		"plugin": true
+	},
+	"dev": {
+		"plugin": true
 	}
 }

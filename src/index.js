@@ -1,10 +1,13 @@
 const express = require('express');
 const { CommandManager } = require('./command/command');
 const { log } = require('./logger');
-const { checkToken, callUrl } = require('./util');
+const { checkToken } = require('./util');
 
 const bodyParser = require("body-parser");
-const { ping, crash, join, say, role, print } = require('./commands');
+const { ping, crash, join, say, role, print, setup } = require('./commands');
+
+const fs = require("fs");
+const { load_all } = require('./plugin');
 
 const app = express();
 
@@ -41,6 +44,16 @@ command_manager.add_command("say", "Say something!", say);
 command_manager.add_command("role", "Get and set roles!", role);
 
 command_manager.add_command("print", "Print a text file!", print);
+
+command_manager.add_command("setup", "Load a plugin!", setup);
+
+exports.command_manager = command_manager;
+
+if(!fs.existsSync("./plugin")) {
+	fs.mkdirSync("./plugin");
+}
+
+load_all();
 
 app.post("/api/message", async (req, res) => {
 

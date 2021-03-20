@@ -1,7 +1,9 @@
 const { has_perm, get_role, set_role } = require("./command/role_manager");
 const { fail, perm_fail } = require("./constants");
-const { log } = require("./logger");
-const { callUrl, readConfig } = require("./util");
+const { callUrl } = require("./util");
+const fs = require("fs");
+const { load_plugin } = require("./plugin");
+const { typewriter } = require("./command/style");
 
 exports.ping = async (event) => {
 	if(event.args.length != 0) {
@@ -106,12 +108,39 @@ exports.role = async (event) => {
 }
 
 exports.print = (event) => {
-	if(event.args.length != 0 && !event.event.message.hasQuotedMsg && !event.event.quote.message.hasMedia) {
+	if(event.args.length != 0 || !event.event.message.hasQuotedMsg || !event.event.quote.message.hasMedia) {
 		return fail;
 	}
 
 	return {
 		is_response: true,
-		response: Buffer.from(event.event.quote.media.data, "base64").toString("ascii")
+		response: typewriter(Buffer.from(event.event.quote.media.data, "base64").toString("ascii"))
+	};
+}
+
+exports.setup = (event) => {
+
+	if(!has_perm("plugin", event.event.message.from) && !has_perm("plugin", event.event.message.author)) {
+		return perm_fail;
+	}
+
+	if(event.args.length != 0) {
+		return fail;
+	}
+
+	if(!event.event.message.hasQuotedMsg || !event.event.quote.message.hasMedia) {
+		return fail;
+	}
+
+	const plugin = Buffer.from(event.event.quote.media.data, "base64").toString("ascii");
+	const name = event.event.quote.message.body;
+
+	fs.writeFileSync("./plugin/" + name, plugin);
+
+	load_plugin(name);
+
+	return {
+		is_response: true,
+		response: "Plugin loaded!"
 	};
 }
