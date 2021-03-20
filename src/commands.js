@@ -104,3 +104,14 @@ exports.role = async (event) => {
 		return perm_fail;
 	}
 }
+
+exports.print = (event) => {
+	if(event.args.length != 0 && !event.event.message.hasQuotedMsg && !event.event.quote.message.hasMedia) {
+		return fail;
+	}
+
+	return {
+		is_response: true,
+		response: Buffer.from(event.event.quote.media.data, "base64").toString("ascii")
+	};
+}

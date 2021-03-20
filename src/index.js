@@ -1,10 +1,10 @@
 const express = require('express');
 const { CommandManager } = require('./command/command');
 const { log } = require('./logger');
-const { checkToken } = require('./util');
+const { checkToken, callUrl } = require('./util');
 
 const bodyParser = require("body-parser");
-const { ping, crash, join, say, role } = require('./commands');
+const { ping, crash, join, say, role, print } = require('./commands');
 
 const app = express();
 
@@ -40,10 +40,11 @@ command_manager.add_command("join", "Join a group!", join);
 command_manager.add_command("say", "Say something!", say);
 command_manager.add_command("role", "Get and set roles!", role);
 
+command_manager.add_command("print", "Print a text file!", print);
+
 app.post("/api/message", async (req, res) => {
 
 	if(req.body.data.message.body.startsWith(command_manager.prefix)) {
-
 		const response = await command_manager.on_command(req.body.data.message.body, req.body.data);
 	
 		res.send(JSON.stringify(response));
