@@ -1,0 +1,14 @@
+{
+	"owner": {
+		"spam": true,
+		"perm": true,
+		"blacklist": true,
+		"join": true,
+		"crash": true,
+		"role": true
+	},
+	"mod": {
+		"blacklist": true,
+		"join": true
+	}
+}
