@@ -1,7 +1,7 @@
 FROM debian
 
 RUN apt update
-RUN apt install npm nodejs
+RUN apt install npm nodejs -y
 
 RUN mkdir code
 
