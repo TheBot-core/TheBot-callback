@@ -1,7 +1,4 @@
-FROM debian
-
-RUN apt update
-RUN apt install npm nodejs -y
+FROM node:lts-alpine
 
 RUN mkdir code
 
