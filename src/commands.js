@@ -53,7 +53,7 @@ exports.join = async (event) => {
 }
 
 exports.say = async (event) => {
-	if(event.args.length < 0) {
+	if(event.args.length < 1) {
 		return fail;
 	}
 
