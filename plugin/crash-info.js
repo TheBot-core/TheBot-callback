@@ -3,7 +3,7 @@ const { fail } = require("../src/constants");
 const fs = require("fs");
 const { typewriter } = require("../src/command/style");
 
-command_manager.add_command("info", "Get info about a crash!", async (event) => {
+command_manager.add_command("info", "Get info about a crash!", "crash", async (event) => {
 	if(event.args.length != 1) {
 		return fail;
 	}

@@ -1,5 +1,5 @@
-const { has_perm, get_role, set_role } = require("./command/role_manager");
-const { fail, perm_fail } = require("./constants");
+const { get_role, set_role } = require("./command/role_manager");
+const { fail } = require("./constants");
 const { callUrl } = require("./util");
 const fs = require("fs");
 const { load_plugin } = require("./plugin");
@@ -21,11 +21,7 @@ exports.crash = async (event) => {
 		return fail;
 	}
 
-	if(has_perm("crash", event.event.message.from) || has_perm("crash", event.event.message.author)) {
-		throw new Error("D:");
-	} else {
-		return perm_fail;
-	}
+	throw new Error("D:");
 }
 
 exports.join = async (event) => {
@@ -33,22 +29,18 @@ exports.join = async (event) => {
 		return fail;
 	}
 
-	if(has_perm("join", event.event.message.from) || has_perm("join", event.event.message.author)) {
-		if(event.args[0].startsWith("https://chat.whatsapp.com/")) {
-			const group = event.args[0].replace("https://chat.whatsapp.com/", "");
-			callUrl("join", {
-				invite: group
-			});
+	if(event.args[0].startsWith("https://chat.whatsapp.com/")) {
+		const group = event.args[0].replace("https://chat.whatsapp.com/", "");
+		callUrl("join", {
+			invite: group
+		});
 
-			return {
-				is_response: true,
-				response: "Joining group " + group
-			};
-		} else {
-			return fail;
-		}
+		return {
+			is_response: true,
+			response: "Joining group " + group
+		};
 	} else {
-		return perm_fail;
+		return fail;
 	}
 }
 
@@ -68,42 +60,38 @@ exports.role = async (event) => {
 		return fail;
 	}
 
-	if(has_perm("role", event.event.message.from) || has_perm("role", event.event.message.author)) {
-		switch(event.args[0]) {
-			case "get":
-				if(event.args.length != 2) {
-					return fail;
-				}
-	
-				const user = event.event.message.mentionedIds[0];
-				const role = get_role(user);
-	
-				return {
-					is_response: true,
-					response: `The role of ${event.args[1]} is ${role}`,
-					mentions: [user]
-				};
-	
-			case "set":
-				if(event.args.length != 3) {
-					return fail;
-				}
-		
-				const user2 = event.event.message.mentionedIds[0];
-		
-				set_role(user2, event.args[2]);
-		
-				return {
-					is_response: true,
-					response: `Setting role of ${event.args[1]} to ${event.args[2]}`,
-					mentions: [user2]
-				};
-			
-			default:
+	switch(event.args[0]) {
+		case "get":
+			if(event.args.length != 2) {
 				return fail;
-		}
-	} else {
-		return perm_fail;
+			}
+	
+			const user = event.event.message.mentionedIds[0];
+			const role = get_role(user);
+	
+			return {
+				is_response: true,
+				response: `The role of ${event.args[1]} is ${role}`,
+				mentions: [user]
+			};
+	
+		case "set":
+			if(event.args.length != 3) {
+				return fail;
+			}
+		
+			const user2 = event.event.message.mentionedIds[0];
+		
+			set_role(user2, event.args[2]);
+		
+			return {
+				is_response: true,
+				response: `Setting role of ${event.args[1]} to ${event.args[2]}`,
+				mentions: [user2]
+			};
+			
+		default:
+			return fail;
 	}
 }
 
@@ -119,10 +107,6 @@ exports.print = (event) => {
 }
 
 exports.setup = (event) => {
-
-	if(!has_perm("plugin", event.event.message.from) && !has_perm("plugin", event.event.message.author)) {
-		return perm_fail;
-	}
 
 	if(event.args.length != 0) {
 		return fail;

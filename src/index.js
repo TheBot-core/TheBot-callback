@@ -37,15 +37,15 @@ app.use((req, res, next) => {
 
 const command_manager = new CommandManager("#");
 
-command_manager.add_command("ping", "Ping the bot!", ping);
-command_manager.add_command("crash", "Crash the bot!", crash);
-command_manager.add_command("join", "Join a group!", join);
-command_manager.add_command("say", "Say something!", say);
-command_manager.add_command("role", "Get and set roles!", role);
+command_manager.add_command("ping", "Ping the bot!", undefined, ping);
+command_manager.add_command("crash", "Crash the bot!", "crash", crash);
+command_manager.add_command("join", "Join a group!", "join", join);
+command_manager.add_command("say", "Say something!", undefined, say);
+command_manager.add_command("role", "Get and set roles!", "role", role);
 
-command_manager.add_command("print", "Print a text file!", print);
+command_manager.add_command("print", "Print a text file!", undefined, print);
 
-command_manager.add_command("setup", "Load a plugin!", setup);
+command_manager.add_command("setup", "Load a plugin!", "plugin", setup);
 
 exports.command_manager = command_manager;
 

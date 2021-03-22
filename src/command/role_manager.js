@@ -4,6 +4,10 @@ function has_perm(perm, user) {
 	const roles = JSON.parse(fs.readFileSync("roles.json"));
 	const users = JSON.parse(fs.readFileSync("users.json"));
 
+	if(perm == undefined) {
+		return true;
+	}
+
 	if(users[user] != undefined) {
 		const user_role = users[user];
 

@@ -1,7 +1,8 @@
-const { empty } = require("../constants");
+const { empty, perm_fail } = require("../constants");
 const { dump } = require("../crash");
 const { log } = require("../logger");
 const { callUrl, readConfig } = require("../util");
+const { has_perm } = require("./role_manager");
 const { big, italic, typewriter } = require("./style");
 
 class CommandEvent {
@@ -36,13 +37,14 @@ class CommandManager {
 		this.prefix = prefix;
 	}
 
-	add_command_long(command, help, help_long, executor) {
+	add_command_long(command, help, help_long, perm, executor) {
 
 		const command_obj = {
 			command: this.prefix + command,
 			help: help,
 			help_long: help_long,
-			executor: executor
+			executor: executor,
+			perm: perm
 		};
 
 		this.commands.push(command_obj);
@@ -51,13 +53,13 @@ class CommandManager {
 
 	}
 
-	add_command(command, help, executor) {
-		this.add_command_long(command, help, "Not specified!", executor);
+	add_command(command, help, perm, executor) {
+		this.add_command_long(command, help, "Not specified!", perm, executor);
 	}
 
 	async on_command(message, command_event_info) {
 
-		const command_event = new CommandEvent(message, message.split(" ")[0], command_event_info);
+		const command_event = new CommandEvent(command_event_info.message.hasQuotedMsg ? message.split(" ")[0] + " " + command_event_info.quote.message.body : message, message.split(" ")[0], command_event_info);
 
 		if(command_event.command === this.prefix + "help") {
 
@@ -107,11 +109,15 @@ class CommandManager {
 				if(this.commands[cmd].command === command_event.command) {
 					log("Found command " + command_event.command + "!");
 					try { 
-						const res = await this.commands[cmd].executor(command_event);
-						if(res) {
-							return res;
+						if(!has_perm(this.commands[cmd].perm, command_event_info.message.from) && !has_perm(this.commands[cmd].perm, command_event_info.message.author)) {
+							return perm_fail;
 						} else {
-							return empty;
+							const res = await this.commands[cmd].executor(command_event);
+							if(res) {
+								return res;
+							} else {
+								return empty;
+							}
 						}
 					} catch (error) {
 						const id = dump(error, command_event);

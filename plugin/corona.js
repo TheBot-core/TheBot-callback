@@ -3,7 +3,7 @@ const { fail } = require("../src/constants");
 const fs = require("fs");
 const fetch = require("node-fetch");
 
-command_manager.add_command("corona", "Get info about COVID 19!", async (event) => {
+command_manager.add_command("corona", "Get info about COVID 19!", undefined, async (event) => {
 	if(event.args.length != 1) {
 		return fail;
 	}
