@@ -96,7 +96,7 @@ exports.role = async (event) => {
 }
 
 exports.print = (event) => {
-	if(event.args.length != 0 || !event.event.message.hasQuotedMsg || !event.event.quote.message.hasMedia) {
+	if(event.args.length != 1 || !event.event.message.hasQuotedMsg || !event.event.quote.message.hasMedia) {
 		return fail;
 	}
 
@@ -108,7 +108,7 @@ exports.print = (event) => {
 
 exports.setup = (event) => {
 
-	if(event.args.length != 0) {
+	if(event.args.length != 1) {
 		return fail;
 	}
 
