@@ -1,9 +1,7 @@
 const { command_manager } = require("../src");
 const { fail } = require("../src/constants");
 const fs = require("fs");
-const { typewriter } = require("../src/command/style");
 const fetch = require("node-fetch");
-const { features } = require("process");
 
 command_manager.add_command("corona", "Get info about COVID 19!", async (event) => {
 	if(event.args.length != 1) {
