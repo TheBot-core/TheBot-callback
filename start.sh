@@ -1,1 +1,1 @@
-screen node .
+screen -S thebot-callback node .
