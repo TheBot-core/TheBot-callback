@@ -110,8 +110,6 @@ class CommandManager {
 					log("Found command " + command_event.command + "!");
 					try { 
 						if(!has_perm("ignore", command_event_info.message.from) && !has_perm("ignore", command_event_info.message.author)) {
-							return blacklist;
-						} else {
 							if(!has_perm(this.commands[cmd].perm, command_event_info.message.from) && !has_perm(this.commands[cmd].perm, command_event_info.message.author)) {
 								return perm_fail;
 							} else {
@@ -122,6 +120,8 @@ class CommandManager {
 									return empty;
 								}
 							}
+						} else {
+							return blacklist;
 						}
 					} catch (error) {
 						const id = dump(error, command_event);
