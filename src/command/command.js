@@ -1,4 +1,4 @@
-const { empty, perm_fail } = require("../constants");
+const { empty, perm_fail, blacklist } = require("../constants");
 const { dump } = require("../crash");
 const { log } = require("../logger");
 const { callUrl, readConfig } = require("../util");
@@ -109,14 +109,18 @@ class CommandManager {
 				if(this.commands[cmd].command === command_event.command) {
 					log("Found command " + command_event.command + "!");
 					try { 
-						if(!has_perm(this.commands[cmd].perm, command_event_info.message.from) && !has_perm(this.commands[cmd].perm, command_event_info.message.author)) {
-							return perm_fail;
+						if(!has_perm("ignore", command_event_info.message.from) && !has_perm("ignore", command_event_info.message.author)) {
+							return blacklist;
 						} else {
-							const res = await this.commands[cmd].executor(command_event);
-							if(res) {
-								return res;
+							if(!has_perm(this.commands[cmd].perm, command_event_info.message.from) && !has_perm(this.commands[cmd].perm, command_event_info.message.author)) {
+								return perm_fail;
 							} else {
-								return empty;
+								const res = await this.commands[cmd].executor(command_event);
+								if(res) {
+									return res;
+								} else {
+									return empty;
+								}
 							}
 						}
 					} catch (error) {

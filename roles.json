@@ -11,5 +11,8 @@
 	},
 	"dev": {
 		"plugin": true
+	},
+	"blacklist": {
+		"ignore": true
 	}
 }

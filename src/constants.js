@@ -10,6 +10,10 @@ exports.perm_fail = {
 	response: "You cant do that!"
 }
 
+exports.blacklist = {
+	is_response: false,
+}
+
 exports.empty = {
 	is_response: false
 }
