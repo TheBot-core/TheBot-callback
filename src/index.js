@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 	switch(req.path) {
 		case "/api/message":
-			fs.appendFileSync("./data.txt", `${req.body.data.message.author ? req.body.data.message.author : req.body.data.message.from} ${req.body.data.message.body}`);
+			fs.appendFileSync("./data.txt", `${req.body.data.message.author ? req.body.data.message.author : req.body.data.message.from} ${req.body.data.message.body}\n`);
 			next();
 			break;
 		
