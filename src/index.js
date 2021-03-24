@@ -4,13 +4,12 @@ const { log } = require('./logger');
 const { checkToken } = require('./util');
 
 const bodyParser = require("body-parser");
-const { ping, crash, join, say, role, print, setup } = require('./commands');
+const { ping, crash, join, say, role, print, setup, ping_help, crash_help, join_help, print_help, setup_help, say_help, role_help } = require('./commands');
 
 const fs = require("fs");
 const { load_all } = require('./plugin');
 
 const app = express();
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -37,15 +36,15 @@ app.use((req, res, next) => {
 
 const command_manager = new CommandManager("#");
 
-command_manager.add_command("ping", "Ping the bot!", undefined, ping);
-command_manager.add_command("crash", "Crash the bot!", "crash", crash);
-command_manager.add_command("join", "Join a group!", "join", join);
-command_manager.add_command("say", "Say something!", undefined, say);
-command_manager.add_command("role", "Get and set roles!", "role", role);
+command_manager.add_command_long("ping", "Ping the bot!", ping_help, undefined, ping);
+command_manager.add_command_long("crash", "Crash the bot!", crash_help, "crash", crash);
+command_manager.add_command_long("join", "Join a group!", join_help, "join", join);
+command_manager.add_command_long("say", "Say something!", say_help, undefined, say);
+command_manager.add_command_long("role", "Get and set roles!", role_help, "role", role);
 
-command_manager.add_command("print", "Print a text file!", undefined, print);
+command_manager.add_command_long("print", "Print a text file!", print_help, undefined, print);
 
-command_manager.add_command("setup", "Load a plugin!", "plugin", setup);
+command_manager.add_command_long("setup", "Load a plugin!", setup_help, "plugin", setup);
 
 exports.command_manager = command_manager;
 

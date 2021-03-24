@@ -5,6 +5,7 @@ const fs = require("fs");
 const { load_plugin } = require("./plugin");
 const { typewriter } = require("./command/style");
 
+
 exports.ping = async (event) => {
 	if(event.args.length != 0) {
 		return fail;
@@ -16,6 +17,8 @@ exports.ping = async (event) => {
 	}
 }
 
+exports.ping_help = `Use '#ping' to ping the bot!`;
+
 exports.crash = async (event) => {
 	if(event.args.length != 0) {
 		return fail;
@@ -23,6 +26,8 @@ exports.crash = async (event) => {
 
 	throw new Error("D:");
 }
+
+exports.crash_help = `Use '#crash' to crash the bot! (Admin only)`;
 
 exports.join = async (event) => {
 	if(event.args.length != 1) {
@@ -44,6 +49,8 @@ exports.join = async (event) => {
 	}
 }
 
+exports.join_help = `Use '#join [invite]' to join a group! (Admin only)\n\nExample: \n#join https://chat.whatsapp.com/0`;
+
 exports.say = async (event) => {
 	if(event.args.length < 1) {
 		return fail;
@@ -54,6 +61,8 @@ exports.say = async (event) => {
 		response: event.args.join(" ")
 	};
 }
+
+exports.say_help = `Use '#say [what]' to say something!\n\nExample: \n#say Hello world`;
 
 exports.role = async (event) => {
 	if(event.args.length < 2) {
@@ -95,6 +104,8 @@ exports.role = async (event) => {
 	}
 }
 
+exports.role_help = `Use '#role [get, set]' to manage roles! (Admin only)\n\nExample: \n#role get @somebody\n#role set @somebody mod`;
+
 exports.print = (event) => {
 	if(event.args.length != 1 || !event.event.message.hasQuotedMsg || !event.event.quote.message.hasMedia) {
 		return fail;
@@ -105,6 +116,8 @@ exports.print = (event) => {
 		response: typewriter(Buffer.from(event.event.quote.media.data, "base64").toString("ascii"))
 	};
 }
+
+exports.print_help = `Use '#print' to print the content of the quoted file!`;
 
 exports.setup = (event) => {
 
@@ -128,3 +141,5 @@ exports.setup = (event) => {
 		response: "Plugin loaded!"
 	};
 }
+
+exports.setup_help = `Use '#setup' to setup the quoted file as a plugin! (Admin only)`;
